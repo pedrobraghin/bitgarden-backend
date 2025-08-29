@@ -1,0 +1,18 @@
+include:
+  - ./docker/grafana-compose.yaml
+services:
+  db:
+    image: postgres
+    restart: always
+    container_name: bitgarden-postgres
+    environment:
+      POSTGRES_USER: bitgarden_admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: bitgarden
+    ports:
+      - '5432:5432'
+    networks:
+      - bitgarden-network
+
+networks:
+  bitgarden-network:
