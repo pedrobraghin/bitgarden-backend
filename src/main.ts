@@ -11,7 +11,6 @@ class Main {
   async bootstrap() {
     const app = await NestFactory.create(AppModule, {
       bufferLogs: true,
-      logger: this.configureLogger(),
     });
 
     const httpAdapterHost = app.get(HttpAdapterHost);

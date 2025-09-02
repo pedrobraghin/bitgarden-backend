@@ -1,9 +1,9 @@
 import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { ConfigService } from '@nestjs/config';
 import { Request, Response } from 'express';
 
 import { CookieManager } from './utils';
+import { OAuthGuard, LoggedInGuard } from './guards';
 
 @Controller('auth')
 export class AuthController {
@@ -13,28 +13,44 @@ export class AuthController {
   ) {}
 
   @Get('github')
-  @UseGuards(AuthGuard('github'))
+  @UseGuards(LoggedInGuard, OAuthGuard('github'))
   async githubLogin() {}
 
   @Get('github/callback')
-  @UseGuards(AuthGuard('github'))
+  @UseGuards(OAuthGuard('github'))
   githubCallback(@Res() res: Response, @Req() req: Request) {
-    res.cookie(
-      ...this.cookieManager.accessTokenCookie(req.user['accessToken']),
-    );
-    return res.redirect(this.configService.get<string>('FRONT_URL')); // Redireciona após o login
+    this.handleOAuthRedirect(res, req.user);
   }
 
   @Get('google')
-  @UseGuards(AuthGuard('google'))
+  @UseGuards(LoggedInGuard, OAuthGuard('google'))
   async logingoogle() {}
 
   @Get('google/callback')
-  @UseGuards(AuthGuard('google'))
+  @UseGuards(OAuthGuard('google'))
   async linkedinCallback(@Res() res: Response, @Req() req: Request) {
-    res.cookie(
-      ...this.cookieManager.accessTokenCookie(req.user['accessToken']),
-    );
-    return res.redirect(this.configService.get<string>('FRONT_URL')); // Redireciona após o login
+    this.handleOAuthRedirect(res, req.user);
+  }
+
+  @Get('logout')
+  logout(@Res() res: Response) {
+    const { cookie, options } = this.cookieManager.getLogoutCookieData();
+
+    res.clearCookie(cookie, options);
+
+    return res.redirect(this.configService.get<string>('FRONT_LOGIN_URL'));
+  }
+
+  private handleOAuthRedirect(
+    res: Response,
+    { accessToken }: { accessToken?: string },
+  ) {
+    if (!accessToken) {
+      res.redirect(this.configService.get<string>('FRONT_LOGIN_URL'));
+      return;
+    }
+
+    res.cookie(...this.cookieManager.getAccessTokenCookie(accessToken));
+    res.redirect(this.configService.get<string>('FRONT_URL'));
   }
 }

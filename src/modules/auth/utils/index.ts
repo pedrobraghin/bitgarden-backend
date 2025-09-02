@@ -1,1 +1,1 @@
-export { CookieManager } from './cookie-manager';
+export { CookieManager } from './cookie-manager.util';
