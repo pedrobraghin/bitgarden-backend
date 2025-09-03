@@ -6,6 +6,7 @@ import { HttpExceptionFilter } from './common';
 import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
 import LokiTransport from 'winston-loki';
+import { ValidationPipe } from '@nestjs/common';
 
 class Main {
   async bootstrap() {
@@ -23,7 +24,7 @@ class Main {
     app.use(CookieParser());
 
     app.useGlobalFilters(new HttpExceptionFilter(httpAdapterHost));
-
+    app.useGlobalPipes(new ValidationPipe());
     await app.listen(process.env.PORT);
   }
 

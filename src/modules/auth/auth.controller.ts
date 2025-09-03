@@ -1,15 +1,18 @@
-import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Request, Response } from 'express';
 
 import { CookieManager } from './utils';
 import { OAuthGuard, LoggedInGuard } from './guards';
+import { GetOAuthProviderDto } from './dtos';
+import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly cookieManager: CookieManager,
     private readonly configService: ConfigService,
+    private readonly authService: AuthService,
   ) {}
 
   @Get('github')
@@ -39,6 +42,11 @@ export class AuthController {
     res.clearCookie(cookie, options);
 
     return res.redirect(this.configService.get<string>('FRONT_LOGIN_URL'));
+  }
+
+  @Get('oauth-url')
+  getOAuthUrl(@Query() { provider }: GetOAuthProviderDto) {
+    return this.authService.getOAuthProviderUrl(provider);
   }
 
   private handleOAuthRedirect(

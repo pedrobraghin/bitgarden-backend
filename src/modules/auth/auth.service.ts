@@ -30,4 +30,21 @@ export class AuthService {
       accessToken,
     };
   }
+
+  getOAuthProviderUrl(provider: string) {
+    let url: string;
+
+    switch (provider) {
+      case 'google': {
+        url = this.configService.get<string>('GOOGLE_PROVIDER_URL');
+        break;
+      }
+      case 'github':
+      default: {
+        url = this.configService.get<string>('GITHUB_PROVIDER_URL');
+      }
+    }
+
+    return { url };
+  }
 }
