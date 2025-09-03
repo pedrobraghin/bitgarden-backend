@@ -1,10 +1,11 @@
-import { CookieManager } from './utils/cookie-manager';
+import { CookieManager } from './utils/cookie-manager.util';
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { GitHubStrategy, GoogleStrategy, JwtStrategy } from './strategies/';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
+import { ProfileModule } from '../profile';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { JwtModule } from '@nestjs/jwt';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
     }),
+    ProfileModule,
   ],
   providers: [
     CookieManager,

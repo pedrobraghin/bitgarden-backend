@@ -24,7 +24,6 @@ export class LoggingInterceptor implements NestInterceptor {
     return next.handle().pipe(
       tap((responseBody) => {
         const responseTime = Date.now() - now;
-
         this.logger.log('HTTP Request', {
           timestamp: new Date().toISOString(),
           method,
@@ -33,6 +32,7 @@ export class LoggingInterceptor implements NestInterceptor {
           headers: {
             userAgent: headers['user-agent'],
             authorization: headers['authorization'] ? '***' : undefined,
+            correlationId: headers['x-correlation-id'],
           },
           response: responseBody,
           responseTime,

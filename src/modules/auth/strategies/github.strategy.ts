@@ -3,6 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-github2';
 import { AuthService } from '../auth.service';
 import { ConfigService } from '@nestjs/config';
+import { DoneCallback } from 'passport';
 
 @Injectable()
 export class GitHubStrategy extends PassportStrategy(Strategy, 'github') {
@@ -18,7 +19,16 @@ export class GitHubStrategy extends PassportStrategy(Strategy, 'github') {
     });
   }
 
-  async validate(_accessToken: string, _refreshToken: string, profile: any) {
-    return this.authService.validateOAuthLogin(profile);
+  async validate(
+    _accessToken: string,
+    _refreshToken: string,
+    profile: any,
+    done: DoneCallback,
+  ) {
+    try {
+      return await this.authService.validateOAuthLogin(profile);
+    } catch (err) {
+      done(err, false);
+    }
   }
 }
