@@ -15,8 +15,9 @@ datasource db {
 }
 
 model Profile {
-  name       String
   id         String   @id @default(uuid())
+  name       String
+  username   String   @unique
   providerId String   @unique
   provider   String
   email      String   @unique
