@@ -1,7 +1,8 @@
 import { ProviderProfile } from 'src/@types';
 import { ProfileRepository } from './profile.repository';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { ProfileDto } from './dtos';
+import { ProfileDto, UpdateProfileDto } from './dtos';
+import { randomUUID } from 'node:crypto';
 
 @Injectable()
 export class ProfileService {
@@ -14,6 +15,7 @@ export class ProfileService {
       providerId: data.id,
       provider: data.provider,
       avatarUrl: data.photos?.[0]?.value,
+      username: `user@${randomUUID()}`,
     };
 
     if (!profileData.email) {
@@ -43,5 +45,34 @@ export class ProfileService {
 
   async getProfileById(id: string) {
     return this.profileRepository.getProfile({ id });
+  }
+
+  async updateProfile(id: string, { username }: UpdateProfileDto) {
+    const usernameAlreadyInUse = await this.profileRepository.getProfile({
+      username,
+    });
+
+    if (usernameAlreadyInUse) {
+      throw new BadRequestException('Username already in use');
+    }
+
+    await this.profileRepository.updateProfile(id, {
+      username: username.toLowerCase(),
+    });
+  }
+
+  async checkUsernameAvailability(username: string) {
+    const profile = await this.profileRepository.getProfile({
+      username,
+    });
+
+    if (!profile)
+      return {
+        available: true,
+      };
+
+    return {
+      available: profile.username === username.toLowerCase(),
+    };
   }
 }

@@ -25,6 +25,9 @@ export class ProfileRepository {
                 provider: filter.provider,
                 providerId: filter.providerId,
               },
+              {
+                username: filter.username,
+              },
             ],
           },
           {

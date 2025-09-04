@@ -5,4 +5,5 @@ export class GetProfileFilter {
   email?: string;
   providerId?: string;
   provider?: Provider;
+  username?: string;
 }

@@ -1,9 +1,20 @@
-import { Controller, Get, Inject, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Patch,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 import { ProfileService } from './profile.service';
+import { UpdateProfileDto } from './dtos';
+import { UserId } from 'src/common/auth-id.decorator';
 
 @Controller('profile')
 export class ProfileController {
@@ -17,5 +28,16 @@ export class ProfileController {
   async getProfile(@Req() req: Request) {
     this.logger.info('ProfileController > getProfile');
     return await this.profileService.getProfileById(req.user['sub']);
+  }
+
+  @Patch()
+  @UseGuards(AuthGuard('jwt'))
+  async updateProfile(@Body() data: UpdateProfileDto, @UserId() id: string) {
+    return await this.profileService.updateProfile(id, data);
+  }
+
+  @Get('username-availability/:username')
+  async checkUsernameAvailability(@Param('username') username: string) {
+    return await this.profileService.checkUsernameAvailability(username);
   }
 }
