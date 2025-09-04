@@ -66,8 +66,13 @@ export class ProfileService {
       username,
     });
 
-    if (!profile) return true;
+    if (!profile)
+      return {
+        available: true,
+      };
 
-    return profile.username === username.toLowerCase();
+    return {
+      available: profile.username === username.toLowerCase(),
+    };
   }
 }
