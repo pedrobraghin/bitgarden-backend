@@ -6,4 +6,5 @@ export class GetUserFilter {
   providerId?: string;
   provider?: Provider;
   username?: string;
+  profile?: boolean;
 }

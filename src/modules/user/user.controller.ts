@@ -14,7 +14,7 @@ import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dtos';
-import { UserId } from 'src/common/auth-id.decorator';
+import { UserData } from 'src/common';
 
 @Controller('user')
 export class UserController {
@@ -32,9 +32,9 @@ export class UserController {
 
   @Patch()
   @UseGuards(AuthGuard('jwt'))
-  async updateUser(@Body() data: UpdateUserDto, @UserId() id: string) {
+  async updateUser(@Body() data: UpdateUserDto, @UserData() user: UserData) {
     this.logger.info('UserController > getUser');
-    return await this.userService.updateUser(id, data);
+    return await this.userService.updateUser(user.id, data);
   }
 
   @Get('username-availability/:username')

@@ -3,7 +3,12 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './modules/user/user.module';
 import { HttpModule } from '@nestjs/axios';
-import { DatabaseModule, AuthModule, MailModule } from './modules';
+import {
+  DatabaseModule,
+  AuthModule,
+  MailModule,
+  ProfileModule,
+} from './modules';
 import { WinstonModule } from 'nest-winston';
 
 import * as winston from 'winston';
@@ -36,10 +41,11 @@ import { LoggingInterceptor } from './common';
         }),
       ],
     }),
-    AuthModule,
-    UserModule,
     DatabaseModule,
     MailModule,
+    AuthModule,
+    UserModule,
+    ProfileModule,
   ],
   controllers: [],
   providers: [
