@@ -3,10 +3,14 @@ import { ProfileRepository } from './profile.repository';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ProfileDto, UpdateProfileDto } from './dtos';
 import { randomUUID } from 'node:crypto';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class ProfileService {
-  constructor(private readonly profileRepository: ProfileRepository) {}
+  constructor(
+    private readonly profileRepository: ProfileRepository,
+    private readonly mailSerivce: MailService,
+  ) {}
 
   async createProfile(data: ProviderProfile) {
     const profileData: ProfileDto = {
@@ -31,6 +35,8 @@ export class ProfileService {
     }
 
     profile = await this.profileRepository.createProfile(profileData);
+
+    await this.mailSerivce.sendWelcomeEmail(profile.email);
 
     return profile;
   }
