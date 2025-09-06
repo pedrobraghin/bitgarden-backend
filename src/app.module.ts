@@ -11,6 +11,7 @@ import * as winston from 'winston';
 import LokiTransport from 'winston-loki';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './common';
+import { MailModule } from './modules/mail/mail.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { LoggingInterceptor } from './common';
     AuthModule,
     ProfileModule,
     DatabaseModule,
+    MailModule,
   ],
   controllers: [],
   providers: [
