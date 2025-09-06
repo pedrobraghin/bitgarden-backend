@@ -1,20 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
-import { GetProfileFilter, ProfileDto } from './dtos';
-import { Profile } from 'src/@types';
+import { GetUserFilter, UserDto } from './dtos';
+import { User } from 'src/@types';
 
 @Injectable()
-export class ProfileRepository {
+export class UserRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async createProfile(profileData: ProfileDto): Promise<Profile> {
-    return this.prismaService.profile.create({
-      data: profileData,
+  async createUser(userData: UserDto): Promise<User> {
+    return this.prismaService.user.create({
+      data: userData,
     });
   }
 
-  async getProfile(filter: GetProfileFilter): Promise<Profile | null> {
-    return this.prismaService.profile.findFirst({
+  async getUser(filter: GetUserFilter): Promise<User | null> {
+    return this.prismaService.user.findFirst({
       where: {
         AND: [
           {
@@ -38,20 +38,17 @@ export class ProfileRepository {
     });
   }
 
-  async deleteProfileById(id: string): Promise<Profile> {
-    return this.prismaService.profile.update({
+  async deleteUserById(id: string): Promise<User> {
+    return this.prismaService.user.update({
       where: { id, active: true },
       data: { active: false },
     });
   }
 
-  async updateProfile(
-    id: string,
-    profileData: Partial<ProfileDto>,
-  ): Promise<Profile> {
-    return this.prismaService.profile.update({
+  async updateUser(id: string, userData: Partial<UserDto>): Promise<User> {
+    return this.prismaService.user.update({
       where: { id, active: true },
-      data: profileData,
+      data: userData,
     });
   }
 }

@@ -12,32 +12,33 @@ import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
-import { ProfileService } from './profile.service';
-import { UpdateProfileDto } from './dtos';
+import { UserService } from './user.service';
+import { UpdateUserDto } from './dtos';
 import { UserId } from 'src/common/auth-id.decorator';
 
-@Controller('profile')
-export class ProfileController {
+@Controller('user')
+export class UserController {
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
-    private readonly profileService: ProfileService,
+    private readonly userService: UserService,
   ) {}
 
   @Get()
   @UseGuards(AuthGuard('jwt'))
-  async getProfile(@Req() req: Request) {
-    this.logger.info('ProfileController > getProfile');
-    return await this.profileService.getProfileById(req.user['sub']);
+  async getUser(@Req() req: Request) {
+    this.logger.info('UserController > getUser');
+    return await this.userService.getUserById(req.user['sub']);
   }
 
   @Patch()
   @UseGuards(AuthGuard('jwt'))
-  async updateProfile(@Body() data: UpdateProfileDto, @UserId() id: string) {
-    return await this.profileService.updateProfile(id, data);
+  async updateUser(@Body() data: UpdateUserDto, @UserId() id: string) {
+    this.logger.info('UserController > getUser');
+    return await this.userService.updateUser(id, data);
   }
 
   @Get('username-availability/:username')
   async checkUsernameAvailability(@Param('username') username: string) {
-    return await this.profileService.checkUsernameAvailability(username);
+    return await this.userService.checkUsernameAvailability(username);
   }
 }

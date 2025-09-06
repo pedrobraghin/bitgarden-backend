@@ -1,26 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { ProfileService } from '../profile/profile.service';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-    private readonly profileService: ProfileService,
+    private readonly userService: UserService,
   ) {}
 
   async validateOAuthLogin(providerProfile: any): Promise<any> {
-    let profile = await this.profileService.getProfileByProviderId(
-      providerProfile.id,
-    );
+    let user = await this.userService.getUserByProviderId(providerProfile.id);
 
-    if (!profile) {
-      profile = await this.profileService.createProfile(providerProfile);
+    if (!user) {
+      user = await this.userService.createUser(providerProfile);
     }
 
-    const payload = { sub: profile.id };
+    const payload = { sub: user.id };
     const accessToken = this.jwtService.sign(payload, {
       secret: this.configService.get<string>('JWT_SECRET'),
       expiresIn: this.configService.get<string>('JWT_EXPIRES_IN'),

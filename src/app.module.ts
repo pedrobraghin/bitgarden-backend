@@ -1,18 +1,15 @@
 import { Module } from '@nestjs/common';
 
-import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
-import { ProfileModule } from './modules/profile/profile.module';
+import { UserModule } from './modules/user/user.module';
 import { HttpModule } from '@nestjs/axios';
-import { DatabaseModule } from './modules';
+import { DatabaseModule, AuthModule, MailModule } from './modules';
 import { WinstonModule } from 'nest-winston';
 
 import * as winston from 'winston';
 import LokiTransport from 'winston-loki';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './common';
-import { MailModule } from './modules/mail/mail.module';
-
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -40,7 +37,7 @@ import { MailModule } from './modules/mail/mail.module';
       ],
     }),
     AuthModule,
-    ProfileModule,
+    UserModule,
     DatabaseModule,
     MailModule,
   ],
