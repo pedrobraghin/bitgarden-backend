@@ -36,7 +36,7 @@ export class UserRepository {
         ],
       },
       include: {
-        Profile: filter.profile,
+        profile: filter.profile,
       },
     });
   }

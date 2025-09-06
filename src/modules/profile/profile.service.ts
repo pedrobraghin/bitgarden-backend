@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { UpdateProfileDto } from './dtos';
 import { ProfileRepository } from './profile.repository';
 
@@ -7,7 +11,13 @@ export class ProfileService {
   constructor(private readonly profileRepository: ProfileRepository) {}
 
   async createProfile(userId: string) {
-    const profile = await this.profileRepository.crateProfile(userId);
+    const profile = await this.profileRepository.createProfile(userId);
+
+    if (!profile) {
+      throw new InternalServerErrorException(
+        'Something went wrong creating user profile.',
+      );
+    }
 
     return profile;
   }

@@ -6,7 +6,7 @@ import { UpdateProfileDto } from './dtos';
 export class ProfileRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  crateProfile(userId: string) {
+  async createProfile(userId: string) {
     return this.prismaService.profile.create({
       data: {
         userId,
@@ -14,7 +14,7 @@ export class ProfileRepository {
     });
   }
 
-  getProfile(userId: string) {
+  async getProfile(userId: string) {
     return this.prismaService.profile.findUnique({
       where: {
         userId,
@@ -23,7 +23,7 @@ export class ProfileRepository {
     });
   }
 
-  deleteProfile(userId: string, profileId: string) {
+  async deleteProfile(userId: string, profileId: string) {
     return this.prismaService.profile.update({
       where: {
         id: profileId,
@@ -35,7 +35,11 @@ export class ProfileRepository {
     });
   }
 
-  updateProfile(userId: string, profileId: string, data: UpdateProfileDto) {
+  async updateProfile(
+    userId: string,
+    profileId: string,
+    data: UpdateProfileDto,
+  ) {
     return this.prismaService.profile.update({
       where: {
         id: profileId,

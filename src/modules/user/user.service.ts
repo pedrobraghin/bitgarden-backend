@@ -4,11 +4,13 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserDto, UpdateUserDto } from './dtos';
 import { randomUUID } from 'node:crypto';
 import { MailService } from '../mail/mail.service';
+import { ProfileService } from '../profile/profile.service';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
+    private readonly profileService: ProfileService,
     private readonly mailSerivce: MailService,
   ) {}
 
@@ -35,7 +37,7 @@ export class UserService {
     }
 
     user = await this.userRepository.createUser(userData);
-
+    await this.profileService.createProfile(user.id);
     await this.mailSerivce.sendWelcomeEmail(user.email);
 
     return user;
@@ -50,7 +52,7 @@ export class UserService {
   }
 
   async getUserById(id: string) {
-    return this.userRepository.getUser({ id });
+    return this.userRepository.getUser({ id, profile: true });
   }
 
   async updateUser(id: string, { username }: UpdateUserDto) {
