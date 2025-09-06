@@ -5,36 +5,34 @@ import {
   Inject,
   Param,
   Patch,
-  Req,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Request } from 'express';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dtos';
-import { UserId } from 'src/common/auth-id.decorator';
+import { UserData } from 'src/common';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
     private readonly userService: UserService,
   ) {}
 
-  @Get()
+  @Get('/me')
   @UseGuards(AuthGuard('jwt'))
-  async getUser(@Req() req: Request) {
+  async getUser(@UserData() user: UserData) {
     this.logger.info('UserController > getUser');
-    return await this.userService.getUserById(req.user['sub']);
+    return await this.userService.getUserById(user.id);
   }
 
   @Patch()
   @UseGuards(AuthGuard('jwt'))
-  async updateUser(@Body() data: UpdateUserDto, @UserId() id: string) {
+  async updateUser(@Body() data: UpdateUserDto, @UserData() user: UserData) {
     this.logger.info('UserController > getUser');
-    return await this.userService.updateUser(id, data);
+    return await this.userService.updateUser(user.id, data);
   }
 
   @Get('username-availability/:username')
