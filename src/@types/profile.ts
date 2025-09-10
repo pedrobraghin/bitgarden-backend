@@ -1,20 +1,14 @@
 export class Profile {
   id: string;
-  name: string;
-  username: string;
-  email: string;
-  provider: string;
-  providerId: string;
-  avatarUrl?: string;
+  userId: string;
+  headline?: string;
+  bio?: string;
+  location?: string;
+  githubUrl?: string;
+  linkedinUrl?: string;
+  websiteUrl?: string;
   active: boolean;
+  availableForOpportunities: boolean;
   createdAt: Date;
   updatedAt: Date;
-}
-
-export class ProviderProfile {
-  id: string;
-  displayName: string;
-  emails: { value: string }[];
-  photos?: { value: string }[];
-  provider: string;
 }

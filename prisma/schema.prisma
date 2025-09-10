@@ -14,7 +14,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Profile {
+model User {
   id         String   @id @default(uuid())
   name       String
   username   String   @unique
@@ -25,6 +25,25 @@ model Profile {
   active     Boolean  @default(true)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  profile    Profile?
 
   @@unique([provider, providerId])
+}
+
+model Profile {
+  id                        String  @id @default(uuid())
+  headline                  String?
+  bio                       String?
+  location                  String?
+  githubUrl                 String?
+  linkedinUrl               String?
+  websiteUrl                String?
+  active                    Boolean @default(true)
+  availableForOpportunities Boolean @default(true)
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

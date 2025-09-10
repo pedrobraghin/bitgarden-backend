@@ -5,7 +5,7 @@ import { ProfileRepository } from './profile.repository';
 
 @Module({
   controllers: [ProfileController],
-  providers: [ProfileService, ProfileRepository],
+  providers: [ProfileRepository, ProfileService],
   exports: [ProfileService],
 })
 export class ProfileModule {}

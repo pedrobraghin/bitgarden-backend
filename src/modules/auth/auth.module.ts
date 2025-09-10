@@ -5,7 +5,7 @@ import { AuthService } from './auth.service';
 import { GitHubStrategy, GoogleStrategy, JwtStrategy } from './strategies/';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
-import { ProfileModule } from '../profile';
+import { UserModule } from '../user';
 
 @Module({
   imports: [
@@ -14,7 +14,7 @@ import { ProfileModule } from '../profile';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
     }),
-    ProfileModule,
+    UserModule,
   ],
   providers: [
     CookieManager,

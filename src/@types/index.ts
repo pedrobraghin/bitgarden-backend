@@ -1,2 +1,3 @@
 export type { Provider } from './provider';
-export type { Profile, ProviderProfile } from './profile';
+export type { User, ProviderProfile } from './user';
+export type { Profile } from './profile';

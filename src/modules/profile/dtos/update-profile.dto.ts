@@ -1,8 +1,9 @@
-import { IsNotEmpty, IsString, MinLength } from 'class-validator';
-
 export class UpdateProfileDto {
-  @IsString()
-  @MinLength(6)
-  @IsNotEmpty()
-  username: string;
+  headline?: string;
+  bio?: string;
+  location?: string;
+  githubUrl?: string;
+  linkedinUrl?: string;
+  websiteUrl?: string;
+  availableForOpportunities?: boolean;
 }

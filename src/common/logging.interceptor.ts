@@ -30,7 +30,6 @@ export class LoggingInterceptor implements NestInterceptor {
           url,
           body,
           headers: {
-            userAgent: headers['user-agent'],
             authorization: headers['authorization'] ? '***' : undefined,
             correlationId: headers['x-correlation-id'],
           },
