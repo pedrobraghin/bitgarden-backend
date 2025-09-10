@@ -1,7 +1,13 @@
+import { CreateStackBatchDto } from './dtos';
 import { StackService } from './stack.service';
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 
-@Controller('stack')
+@Controller('stacks')
 export class StackController {
-  constructor(private readonly StackService: StackService) {}
+  constructor(private readonly stackService: StackService) {}
+
+  @Post('batch')
+  async createStackBatch(@Body() data: CreateStackBatchDto) {
+    return await this.stackService.createStackBatch(data.stacks);
+  }
 }

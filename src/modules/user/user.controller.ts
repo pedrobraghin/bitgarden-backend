@@ -12,7 +12,7 @@ import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dtos';
-import { UserData } from 'src/common';
+import { UserData, UserDataType } from 'src/common';
 
 @Controller('users')
 export class UserController {
@@ -23,14 +23,17 @@ export class UserController {
 
   @Get('/me')
   @UseGuards(AuthGuard('jwt'))
-  async getUser(@UserData() user: UserData) {
+  async getUser(@UserData() user: UserDataType) {
     this.logger.info('UserController > getUser');
     return await this.userService.getUserById(user.id);
   }
 
   @Patch()
   @UseGuards(AuthGuard('jwt'))
-  async updateUser(@Body() data: UpdateUserDto, @UserData() user: UserData) {
+  async updateUser(
+    @Body() data: UpdateUserDto,
+    @UserData() user: UserDataType,
+  ) {
     this.logger.info('UserController > getUser');
     return await this.userService.updateUser(user.id, data);
   }
