@@ -8,6 +8,8 @@ import {
   AuthModule,
   MailModule,
   ProfileModule,
+  StackModule,
+  ProjectModule,
 } from './modules';
 import { WinstonModule } from 'nest-winston';
 
@@ -46,6 +48,8 @@ import { LoggingInterceptor } from './common';
     AuthModule,
     UserModule,
     ProfileModule,
+    StackModule,
+    ProjectModule,
   ],
   controllers: [],
   providers: [

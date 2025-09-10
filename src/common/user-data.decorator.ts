@@ -9,4 +9,4 @@ export const UserData = createParamDecorator(
   },
 );
 
-export type UserData = User & { profile: Profile };
+export type UserDataType = User & { profile: Profile };

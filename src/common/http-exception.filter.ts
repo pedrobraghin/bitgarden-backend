@@ -21,10 +21,19 @@ export class HttpExceptionFilter implements ExceptionFilter {
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
+    const exceptionResponse =
+      exception instanceof HttpException
+        ? exception.getResponse()
+        : 'Internal server error';
+
     const responseBody = {
       statusCode: httpStatus,
       timestamp: new Date().toISOString(),
       path: httpAdapter.getRequestUrl(ctx.getRequest()),
+      error:
+        typeof exceptionResponse === 'string'
+          ? exceptionResponse
+          : (exceptionResponse as Record<string, any>),
     };
 
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
