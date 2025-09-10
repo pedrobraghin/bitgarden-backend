@@ -1,4 +1,13 @@
-import { Controller, Get, Query, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Query,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Request, Response } from 'express';
 
@@ -36,12 +45,11 @@ export class AuthController {
   }
 
   @Get('logout')
+  @HttpCode(HttpStatus.NO_CONTENT)
   logout(@Res() res: Response) {
     const { cookie, options } = this.cookieManager.getLogoutCookieData();
 
     res.clearCookie(cookie, options);
-
-    return res.redirect(this.configService.get<string>('FRONT_LOGIN_URL'));
   }
 
   @Get('oauth-url')
@@ -49,16 +57,13 @@ export class AuthController {
     return this.authService.getOAuthProviderUrl(provider);
   }
 
-  private handleOAuthRedirect(
-    res: Response,
-    { accessToken }: { accessToken?: string },
-  ) {
-    if (!accessToken) {
+  private handleOAuthRedirect(res: Response, data: { accessToken?: string }) {
+    if (!data?.accessToken) {
       res.redirect(this.configService.get<string>('FRONT_LOGIN_URL'));
       return;
     }
 
-    res.cookie(...this.cookieManager.getAccessTokenCookie(accessToken));
+    res.cookie(...this.cookieManager.getAccessTokenCookie(data.accessToken));
     res.redirect(this.configService.get<string>('FRONT_URL'));
   }
 }

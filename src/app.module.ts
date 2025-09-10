@@ -9,6 +9,8 @@ import {
   MailModule,
   ProfileModule,
   SearchModule,
+  StackModule,
+  ProjectModule,
 } from './modules';
 import { WinstonModule } from 'nest-winston';
 
@@ -48,6 +50,8 @@ import { LoggingInterceptor } from './common';
     UserModule,
     ProfileModule,
     SearchModule,
+    StackModule,
+    ProjectModule,
   ],
   controllers: [],
   providers: [
