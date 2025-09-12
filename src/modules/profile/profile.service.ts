@@ -11,7 +11,12 @@ export class ProfileService {
   constructor(private readonly profileRepository: ProfileRepository) {}
 
   async createProfile(userId: string) {
-    const profile = await this.profileRepository.createProfile(userId);
+    const profile = await this.profileRepository.createProfile(userId, {
+      availableForOpportunities: true,
+      bio: 'Sem biografia',
+      headline: 'Sem título',
+      location: 'Nenhuma localização informada',
+    });
 
     if (!profile) {
       throw new InternalServerErrorException(

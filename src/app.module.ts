@@ -8,6 +8,7 @@ import {
   AuthModule,
   MailModule,
   ProfileModule,
+  SearchModule,
   StackModule,
   ProjectModule,
 } from './modules';
@@ -48,6 +49,7 @@ import { LoggingInterceptor } from './common';
     AuthModule,
     UserModule,
     ProfileModule,
+    SearchModule,
     StackModule,
     ProjectModule,
   ],

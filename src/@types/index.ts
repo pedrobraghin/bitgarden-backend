@@ -1,5 +1,5 @@
 export type { Provider } from './provider';
-export type { User, ProviderProfile } from './user';
+export type { User, ProviderProfile, PublicUser } from './user';
 export type { Profile } from './profile';
 export type { BatchResult } from './batch';
 export type { Stack } from './stack';

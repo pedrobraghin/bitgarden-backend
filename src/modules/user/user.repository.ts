@@ -41,6 +41,25 @@ export class UserRepository {
     });
   }
 
+  async searchUsersByUsername(term: string) {
+    return this.prismaService.user.findMany({
+      where: {
+        OR: [
+          {
+            username: {
+              contains: term,
+            },
+          },
+          {
+            username: {
+              startsWith: term,
+            },
+          },
+        ],
+      },
+    });
+  }
+
   async deleteUserById(id: string): Promise<User> {
     return this.prismaService.user.update({
       where: { id, active: true },
