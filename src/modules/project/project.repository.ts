@@ -49,4 +49,23 @@ export class ProjectRepository {
   async getProjects() {
     return this.prismaService.project.findMany();
   }
+
+  async searchProjectsByName(name: string) {
+    return this.prismaService.project.findMany({
+      where: {
+        OR: [
+          {
+            name: {
+              contains: name,
+            },
+          },
+          {
+            name: {
+              startsWith: name,
+            },
+          },
+        ],
+      },
+    });
+  }
 }

@@ -18,3 +18,10 @@ export class ProviderProfile {
   photos?: { value: string }[];
   provider: string;
 }
+
+export class PublicUser {
+  id: string;
+  name: string;
+  username: string;
+  avatarUrl?: string;
+}

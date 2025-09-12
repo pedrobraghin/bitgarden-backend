@@ -24,7 +24,12 @@ class Main {
     app.use(CookieParser());
 
     app.useGlobalFilters(new HttpExceptionFilter(httpAdapterHost));
-    app.useGlobalPipes(new ValidationPipe());
+    app.useGlobalPipes(
+      new ValidationPipe({
+        transform: true, // Ativa a transformação dos DTOs
+        whitelist: true,
+      }),
+    );
     await app.listen(process.env.PORT);
   }
 

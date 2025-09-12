@@ -6,10 +6,11 @@ import { UpdateProfileDto } from './dtos';
 export class ProfileRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async createProfile(userId: string) {
+  async createProfile(userId: string, data?: UpdateProfileDto) {
     return this.prismaService.profile.create({
       data: {
         userId,
+        ...data,
       },
     });
   }
