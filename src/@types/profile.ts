@@ -4,8 +4,8 @@ export class Profile {
   headline?: string;
   bio?: string;
   location?: string;
-  githubUrl?: string;
-  linkedinUrl?: string;
+  githubUsername?: string;
+  linkedinUsername?: string;
   websiteUrl?: string;
   active: boolean;
   availableForOpportunities: boolean;

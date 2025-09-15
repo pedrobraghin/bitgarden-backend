@@ -10,12 +10,13 @@ import { ProfileRepository } from './profile.repository';
 export class ProfileService {
   constructor(private readonly profileRepository: ProfileRepository) {}
 
-  async createProfile(userId: string) {
+  async createProfile(userId: string, data?: UpdateProfileDto) {
     const profile = await this.profileRepository.createProfile(userId, {
+      ...data,
       availableForOpportunities: true,
-      bio: 'Sem biografia',
-      headline: 'Sem título',
-      location: 'Nenhuma localização informada',
+      bio: data.bio ?? 'Sem biografia',
+      headline: data.headline ?? 'Sem título',
+      location: data.location ?? 'Nenhuma localização informada',
     });
 
     if (!profile) {

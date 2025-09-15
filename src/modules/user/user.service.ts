@@ -1,7 +1,7 @@
-import { ProviderProfile } from 'src/@types';
+import { ProviderProfile, User } from 'src/@types';
 import { UserRepository } from './user.repository';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { UserDto, UpdateUserDto } from './dtos';
+import { UserDto, UpdateUserDto, GetUserResDto } from './dtos';
 import { randomUUID } from 'node:crypto';
 import { MailService } from '../mail/mail.service';
 import { ProfileService } from '../profile/profile.service';
@@ -28,7 +28,7 @@ export class UserService {
       throw new BadRequestException('E-mail is required');
     }
 
-    let user = await this.userRepository.getUser({
+    let user: User = await this.userRepository.getUser({
       email: userData.email,
     });
 
@@ -51,22 +51,28 @@ export class UserService {
     return this.userRepository.getUser({ providerId });
   }
 
-  async getUserById(id: string) {
-    return this.userRepository.getUser({ id, profile: true });
+  async getUserById(id: string): Promise<GetUserResDto> {
+    return this.userRepository.getUserWithProfile({ id, profile: true });
   }
 
-  async updateUser(id: string, { username }: UpdateUserDto) {
-    const usernameAlreadyInUse = await this.userRepository.getUser({
-      username,
-    });
-
-    if (usernameAlreadyInUse) {
-      throw new BadRequestException('Username already in use');
+  async updateUser(id: string, data: UpdateUserDto) {
+    if (Object.keys(data).length === 0) {
+      throw new BadRequestException('At least one field required to update.');
     }
 
-    await this.userRepository.updateUser(id, {
-      username: username.toLowerCase(),
-    });
+    if (data.username) {
+      const usernameAlreadyInUse = await this.userRepository.getUser({
+        username: data.username,
+      });
+
+      if (usernameAlreadyInUse) {
+        throw new BadRequestException('Username already in use');
+      }
+
+      data.username = data.username.toLowerCase();
+    }
+
+    await this.userRepository.updateUser(id, data);
   }
 
   async checkUsernameAvailability(username: string) {

@@ -24,4 +24,11 @@ export class PublicUser {
   name: string;
   username: string;
   avatarUrl?: string;
+  headline?: string;
+  bio?: string;
+  location?: string;
+  githubUsername?: string;
+  linkedinUsername?: string;
+  websiteUrl?: string;
+  availableForOpportunities: boolean;
 }
