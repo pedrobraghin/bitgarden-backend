@@ -22,11 +22,12 @@ export function OAuthGuard(provider: string) {
     ): TUser {
       const response = context.switchToHttp().getResponse();
 
-      const errorCode = 'ERR_LP_' + provider.toUpperCase(); // refator pra criar um pattern pra error codes
-
-      this.logger.warn(`OAuthGuard > ${errorCode}`, { err, user, info });
-
       if (err || !user) {
+        console.warn(err);
+        const errorCode = 'ERR_LP_' + provider.toUpperCase(); // refator pra criar um pattern pra error codes
+
+        this.logger.warn(`OAuthGuard > ${errorCode}`, { err, user, info });
+
         return response.redirect(
           `${this.configService.get<string>('FRONT_LOGIN_URL')}?error=${encodeURIComponent(errorCode)}`,
         );

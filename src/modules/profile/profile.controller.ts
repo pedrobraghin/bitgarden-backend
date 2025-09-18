@@ -4,7 +4,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { UserData, UserDataType } from 'src/common';
 import { UpdateProfileDto } from './dtos';
 
-@Controller('profile')
+@Controller('profiles')
 @UseGuards(AuthGuard('jwt'))
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}

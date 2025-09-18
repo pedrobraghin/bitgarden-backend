@@ -14,9 +14,9 @@ export class ProfileService {
     const profile = await this.profileRepository.createProfile(userId, {
       ...data,
       availableForOpportunities: true,
-      bio: data.bio ?? 'Sem biografia',
-      headline: data.headline ?? 'Sem título',
-      location: data.location ?? 'Nenhuma localização informada',
+      bio: data?.bio ?? 'Sem biografia',
+      headline: data?.headline ?? 'Sem título',
+      location: data?.location ?? 'Nenhuma localização informada',
     });
 
     if (!profile) {

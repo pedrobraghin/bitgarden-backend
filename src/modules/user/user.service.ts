@@ -86,7 +86,7 @@ export class UserService {
       };
 
     return {
-      available: user.username === username.toLowerCase(),
+      available: !(user.username === username.toLowerCase()),
     };
   }
 }
