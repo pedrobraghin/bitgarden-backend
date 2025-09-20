@@ -6,6 +6,7 @@ import {
   Query,
   Req,
   Res,
+  UseFilters,
   UseGuards,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -15,6 +16,7 @@ import { CookieManager } from './utils';
 import { OAuthGuard, LoggedInGuard } from './guards';
 import { GetOAuthProviderDto } from './dtos';
 import { AuthService } from './auth.service';
+import { AlreadyLoggedInRedirectFilter } from 'src/common';
 
 @Controller('auth')
 export class AuthController {
@@ -26,16 +28,18 @@ export class AuthController {
 
   @Get('github')
   @UseGuards(LoggedInGuard, OAuthGuard('github'))
+  @UseFilters(AlreadyLoggedInRedirectFilter)
   async githubLogin() {}
 
   @Get('github/callback')
   @UseGuards(OAuthGuard('github'))
-  githubCallback(@Res() res: Response, @Req() req: Request) {
+  async githubCallback(@Res() res: Response, @Req() req: Request) {
     this.handleOAuthRedirect(res, req.user);
   }
 
   @Get('google')
   @UseGuards(LoggedInGuard, OAuthGuard('google'))
+  @UseFilters(AlreadyLoggedInRedirectFilter)
   async logingoogle() {}
 
   @Get('google/callback')

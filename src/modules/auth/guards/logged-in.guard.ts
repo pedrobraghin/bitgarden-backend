@@ -1,26 +1,38 @@
 import { CookieManager } from './../utils/cookie-manager.util';
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Request, Response } from 'express';
+import { JwtService } from '@nestjs/jwt';
+import { Request } from 'express';
 
 @Injectable()
 export class LoggedInGuard implements CanActivate {
   constructor(
     private readonly configService: ConfigService,
     private readonly cookieManager: CookieManager,
+    private readonly jwtService: JwtService,
   ) {}
 
   canActivate(context: ExecutionContext): boolean {
     const req = context.switchToHttp().getRequest<Request>();
-    const res = context.switchToHttp().getResponse<Response>();
 
     const token = req.cookies[this.cookieManager.accessTokenCookieName];
 
-    if (token) {
-      res.redirect(this.configService.get<string>('FRONT_URL'));
-      return false;
+    if (!token) {
+      return true;
     }
+    try {
+      this.jwtService.verify(token, {
+        secret: this.configService.get<string>('JWT_SECRET'),
+      });
 
-    return true;
+      throw new UnauthorizedException();
+    } catch (err) {
+      return true;
+    }
   }
 }

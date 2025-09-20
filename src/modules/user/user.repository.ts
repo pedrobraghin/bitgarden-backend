@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
 import { GetUserFilter, UserDto } from './dtos';
-import { User } from 'src/@types';
+import { Profile, User } from 'src/@types';
 
 @Injectable()
 export class UserRepository {
@@ -41,6 +41,12 @@ export class UserRepository {
     });
   }
 
+  async getUserWithProfile(
+    filter: GetUserFilter,
+  ): Promise<(User & { profile: Profile }) | null> {
+    return this.getUser(filter) as unknown as User & { profile: Profile };
+  }
+
   async searchUsersByUsername(term: string) {
     return this.prismaService.user.findMany({
       where: {
@@ -56,6 +62,9 @@ export class UserRepository {
             },
           },
         ],
+      },
+      include: {
+        profile: true,
       },
     });
   }

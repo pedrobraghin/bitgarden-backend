@@ -37,8 +37,8 @@ model Profile {
   headline                  String?
   bio                       String?
   location                  String?
-  githubUrl                 String?
-  linkedinUrl               String?
+  githubUsername            String?
+  linkedinUsername          String?
   websiteUrl                String?
   active                    Boolean @default(true)
   availableForOpportunities Boolean @default(true)

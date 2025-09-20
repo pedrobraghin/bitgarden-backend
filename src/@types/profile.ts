@@ -1,14 +1,14 @@
-export class Profile {
+export type Profile = {
   id: string;
   userId: string;
   headline?: string;
   bio?: string;
   location?: string;
-  githubUrl?: string;
-  linkedinUrl?: string;
+  githubUsername?: string;
+  linkedinUsername?: string;
   websiteUrl?: string;
   active: boolean;
   availableForOpportunities: boolean;
   createdAt: Date;
   updatedAt: Date;
-}
+};
