@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { UpdateProfileDto } from './dtos';
 import { ProfileRepository } from './profile.repository';
+import { secureLinkRegex } from 'src/utils/regex';
 
 @Injectable()
 export class ProfileService {
@@ -43,6 +44,10 @@ export class ProfileService {
     profileId: string,
     data: UpdateProfileDto,
   ) {
+    if (data.websiteUrl && !secureLinkRegex.test(data.websiteUrl)) {
+      data.websiteUrl = 'https://' + data.websiteUrl;
+    }
+
     const updatedProfile = await this.profileRepository.updateProfile(
       userId,
       profileId,

@@ -1,3 +1,4 @@
+import { Expose } from 'class-transformer';
 import { IsBoolean, IsOptional, IsString, IsUrl } from 'class-validator';
 
 export class UpdateProfileDto {
@@ -14,10 +15,12 @@ export class UpdateProfileDto {
   location?: string;
 
   @IsOptional()
+  @Expose({ name: 'githubUrl' })
   @IsString()
   githubUsername?: string;
 
   @IsOptional()
+  @Expose({ name: 'linkedinUrl' })
   @IsString()
   linkedinUsername?: string;
 

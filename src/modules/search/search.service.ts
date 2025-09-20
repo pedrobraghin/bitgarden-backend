@@ -9,6 +9,7 @@ export class SearchService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly projectRepository: ProjectRepository,
+    private readonly userBuilder: UserBuilder,
   ) {}
 
   async searchByTerm(term: string, filter: FilterQueryDto) {
@@ -21,7 +22,7 @@ export class SearchService {
       const userResults = await this.userRepository.searchUsersByUsername(term);
 
       if (userResults.length)
-        results.users = userResults.map(UserBuilder.publicUser);
+        results.users = userResults.map(this.userBuilder.publicUser);
     }
 
     if (filter.projects) {

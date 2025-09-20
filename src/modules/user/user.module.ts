@@ -3,11 +3,12 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { UserRepository } from './user.repository';
 import { ProfileModule } from '../profile';
+import { UserBuilder } from './user.builder';
 
 @Module({
   imports: [ProfileModule],
   controllers: [UserController],
-  providers: [UserService, UserRepository],
-  exports: [UserService, UserRepository],
+  providers: [UserBuilder, UserService, UserRepository],
+  exports: [UserService, UserRepository, UserBuilder],
 })
 export class UserModule {}

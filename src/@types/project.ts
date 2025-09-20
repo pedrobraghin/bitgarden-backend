@@ -1,4 +1,4 @@
-export class Project {
+export type Project = {
   id: string;
   name: string;
   description: string;
@@ -6,7 +6,7 @@ export class Project {
   ownerId: string;
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
 export enum ProjectRole {
   ADMIN = 'ADMIN',
@@ -15,11 +15,11 @@ export enum ProjectRole {
   OWNER = 'OWNER',
 }
 
-export class ProjectMember {
+export type ProjectMember = {
   projectId: string;
   userId: string;
   role: keyof typeof ProjectRole;
   project: Project;
   createdAt: Date;
   updatedAt: Date;
-}
+};

@@ -1,19 +1,16 @@
-import { Profile, PublicUser, User } from 'src/@types';
+import { Injectable } from '@nestjs/common';
+import { PublicUser, User } from 'src/@types';
 
+@Injectable()
 export class UserBuilder {
-  static publicUser(user: User & { profile: Profile }): PublicUser {
+  publicUser(user: User): PublicUser {
     return {
       id: user.id,
       name: user.name,
       username: user.username,
       avatarUrl: user.avatarUrl,
-      headline: user.profile.headline,
-      bio: user.profile.bio,
-      location: user.profile.location,
-      githubUsername: user.profile.githubUsername,
-      linkedinUsername: user.profile.linkedinUsername,
-      websiteUrl: user.profile.websiteUrl,
-      availableForOpportunities: user.profile.availableForOpportunities,
+      email: user.email,
+      provider: user.provider,
     };
   }
 }

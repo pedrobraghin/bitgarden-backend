@@ -1,4 +1,4 @@
-export class User {
+export type User = {
   id: string;
   name: string;
   username: string;
@@ -9,26 +9,21 @@ export class User {
   active: boolean;
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
-export class ProviderProfile {
+export type ProviderProfile = {
   id: string;
   displayName: string;
   emails: { value: string }[];
   photos?: { value: string }[];
   provider: string;
-}
+};
 
-export class PublicUser {
+export type PublicUser = {
   id: string;
   name: string;
   username: string;
   avatarUrl?: string;
-  headline?: string;
-  bio?: string;
-  location?: string;
-  githubUsername?: string;
-  linkedinUsername?: string;
-  websiteUrl?: string;
-  availableForOpportunities: boolean;
-}
+  email: string;
+  provider: string;
+};

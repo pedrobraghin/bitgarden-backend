@@ -1,4 +1,4 @@
-export class Profile {
+export type Profile = {
   id: string;
   userId: string;
   headline?: string;
@@ -11,4 +11,4 @@ export class Profile {
   availableForOpportunities: boolean;
   createdAt: Date;
   updatedAt: Date;
-}
+};
